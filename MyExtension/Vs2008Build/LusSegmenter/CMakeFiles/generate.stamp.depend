@@ -1,0 +1,22 @@
+# CMake generation dependency list for this directory.
+C:/PFC/SlicerModules/MyExtension/LusSegmenter/CMakeLists.txt
+C:/SlicerPFC/SlicerExecutionModel-build/SlicerExecutionModelConfig.cmake
+C:/SlicerPFC/SlicerExecutionModel-build/ModuleDescriptionParser/ModuleDescriptionParserConfig.cmake
+C:/SlicerPFC/SlicerExecutionModel-build/GenerateCLP/GenerateCLPConfig.cmake
+C:/SlicerPFC/SlicerExecutionModel-build/tclap/TCLAPConfig.cmake
+C:/SlicerPFC/SlicerExecutionModel-build/UseSlicerExecutionModel.cmake
+C:/SlicerPFC/SlicerExecutionModel-build/CMake/SEMMacroBuildCLI.cmake
+C:/SlicerPFC/SlicerExecutionModel-build/CMake/Pre283CMakeParseArguments.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.0/Modules/FindITK.cmake
+C:/SlicerPFC/ITKv4/CMake/UseITK.cmake
+C:/SlicerPFC/SlicerExecutionModel-build/SlicerExecutionModelConfig.cmake
+C:/SlicerPFC/SlicerExecutionModel-build/ModuleDescriptionParser/ModuleDescriptionParserConfig.cmake
+C:/SlicerPFC/SlicerExecutionModel-build/GenerateCLP/GenerateCLPConfig.cmake
+C:/SlicerPFC/SlicerExecutionModel-build/tclap/TCLAPConfig.cmake
+C:/SlicerPFC/SlicerExecutionModel-build/GenerateCLP/UseGenerateCLP.cmake
+C:/SlicerPFC/SlicerExecutionModel-build/tclap/TCLAPConfig.cmake
+C:/SlicerPFC/SlicerExecutionModel-build/tclap/UseTCLAP.cmake
+C:/SlicerPFC/SlicerExecutionModel-build/ModuleDescriptionParser/ModuleDescriptionParserConfig.cmake
+C:/SlicerPFC/SlicerExecutionModel-build/ModuleDescriptionParser/UseModuleDescriptionParser.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.0/Modules/FindITK.cmake
+C:/SlicerPFC/SlicerExecutionModel-build/GenerateCLP/GenerateCLP.cmake

@@ -1,0 +1,5 @@
+# Target labels
+ LusSegmenter
+# Source files and their labels
+C:/SlicerPFC/Slicer-build/Base/CLI/SEMCommandLineLibraryWrapper.cxx
+C:/PFC/SlicerModules/MyExtension/LusSegmenter/CMakeLists.txt

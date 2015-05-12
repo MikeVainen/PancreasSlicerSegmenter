@@ -1,0 +1,1 @@
+@echo El recurso de manifiesto se actualiz¢ por £ltima vez %TIME% en %DATE% > .\cmTryCompileExec1558466378.dir\Debug\mt.dep

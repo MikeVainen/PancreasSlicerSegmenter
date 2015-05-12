@@ -1,0 +1,1 @@
+@echo El recurso de manifiesto se actualiz¢ por £ltima vez %TIME% en %DATE% > .\LusSegmenterLib.dir\Release\mt.dep

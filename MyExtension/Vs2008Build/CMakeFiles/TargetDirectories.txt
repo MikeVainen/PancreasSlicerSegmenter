@@ -1,0 +1,12 @@
+C:/PFC/SlicerModules/MyExtension/Vs2008Build/CMakeFiles/ALL_BUILD.dir
+C:/PFC/SlicerModules/MyExtension/Vs2008Build/CMakeFiles/ConfigureAdditionalLauncherSettings.dir
+C:/PFC/SlicerModules/MyExtension/Vs2008Build/CMakeFiles/Experimental.dir
+C:/PFC/SlicerModules/MyExtension/Vs2008Build/CMakeFiles/ExperimentalUpload.dir
+C:/PFC/SlicerModules/MyExtension/Vs2008Build/CMakeFiles/ExperimentalUploadOnly.dir
+C:/PFC/SlicerModules/MyExtension/Vs2008Build/LusSegmenter/CMakeFiles/LusSegmenter.dir
+C:/PFC/SlicerModules/MyExtension/Vs2008Build/LusSegmenter/Testing/Cxx/CMakeFiles/LusSegmenterData.dir
+C:/PFC/SlicerModules/MyExtension/Vs2008Build/LusSegmenter/CMakeFiles/LusSegmenterLib.dir
+C:/PFC/SlicerModules/MyExtension/Vs2008Build/LusSegmenter/Testing/Cxx/CMakeFiles/LusSegmenterTest.dir
+C:/PFC/SlicerModules/MyExtension/Vs2008Build/CMakeFiles/Nightly.dir
+C:/PFC/SlicerModules/MyExtension/Vs2008Build/CMakeFiles/NightlyUpload.dir
+C:/PFC/SlicerModules/MyExtension/Vs2008Build/CMakeFiles/ZERO_CHECK.dir

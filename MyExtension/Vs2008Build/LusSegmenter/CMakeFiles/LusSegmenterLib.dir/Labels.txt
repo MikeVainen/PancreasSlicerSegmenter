@@ -1,0 +1,7 @@
+# Target labels
+ LusSegmenter
+# Source files and their labels
+C:/PFC/SlicerModules/MyExtension/Vs2008Build/LusSegmenter/LusSegmenterCLP.h
+C:/PFC/SlicerModules/MyExtension/LusSegmenter/LusSegmenter.cxx
+C:/PFC/SlicerModules/MyExtension/LusSegmenter/CMakeLists.txt
+C:/PFC/SlicerModules/MyExtension/Vs2008Build/LusSegmenter/LusSegmenterCLP.h.rule

@@ -1,0 +1,299 @@
+thresholdFilter->SetLowerThreshold(30);
+			thresholdFilter->SetUpperThreshold(80);
+			thresholdFilter->SetInsideValue(90);
+			thresholdFilter->SetOutsideValue(120);
+			thresholdFilter->SetInput(medianFilter->GetOutput());
+			finalMaskImage= thresholdFilter->GetOutput();
+			thresholdFilter->Update();
+			
+			numCircles = 0;
+			counter = 0;
+			vector<bool> shadowy (size[0]);
+			
+
+			for ( outIt.GoToBegin() ; !outIt.IsAtEnd(); ++outIt )
+			{
+				if(finalMaskImage->GetPixel(outIt.GetIndex())==90) outIt.Set(0);
+				if(finalMaskImage->GetPixel(outIt.GetIndex())==120) outIt.Set(image->GetPixel(outIt.GetIndex()));
+				//outIt.Set(finalMaskImage->GetPixel(outIt.GetIndex()));
+				if(outIt.GetIndex()[1] >= boundarypositions[outIt.GetIndex()[0]]-nIts) outIt.Set(0);
+				if(outIt.IsAtEndOfLine() || outIt.GetIndex()[1] > boundarypositions[outIt.GetIndex()[0]] ){
+					outIt.NextLine();
+				}
+
+			}
+
+			OutputImageType::IndexType outIndex;
+
+			for ( outIt.GoToBegin() ; !outIt.IsAtEnd(); --outIt )
+			{
+				if(outIt.Get()!=0){
+					shadowy[outIt.GetIndex()[0]]=false;
+					outIt.NextLine();
+					outIndex[0]=outIt.GetIndex()[0];
+					outIndex[1]= boundarypositions[outIt.GetIndex()[0]];
+					outIt.SetIndex(outIndex);
+					counter=0;
+				}
+				else{
+					counter++;
+					if(counter==15){
+						shadowy[outIt.GetIndex()[0]]=true;
+						outIt.NextLine();
+						outIndex[0]=outIt.GetIndex()[0];
+						outIndex[1]= boundarypositions[outIt.GetIndex()[0]];
+						outIt.SetIndex(outIndex);
+						counter=0;
+					}
+				}
+
+			}
+
+			vector<OutputImageType::IndexType> indexFound;
+
+
+			
+			for ( outIt.GoToBegin() ; !outIt.IsAtEnd(); ++outIt ){
+				if(shadowy[outIt.GetIndex()[0]] && numCircles< ncircles){
+					//outIt.Set(150);
+					if(image->GetPixel(outIt.GetIndex())>= 220 && outIt.GetIndex()[1]>3*bY){
+						//indexFound.insert(indexIterator,outIt.GetIndex());
+						indexFound.push_back(outIt.GetIndex());
+						
+						
+						outIndex[0]=outIt.GetIndex()[0]+10;
+						outIndex[1]= outIt.GetIndex()[1];
+						outIt.SetIndex(outIndex);					
+						outIt.NextLine();
+						++numCircles;
+
+					}
+				}
+				if(outIt.IsAtEndOfLine()|| outIt.GetIndex()[1]== boundarypositions[outIt.GetIndex()[0]] - nIts){
+					outIt.NextLine();
+				}
+			}
+
+			vector<OutputImageType::IndexType>::iterator indexIterator = indexFound.begin();
+			OutputImageType::IndexType *previousIndex = &(*indexIterator);
+
+
+			for(indexIterator = indexFound.begin(); indexIterator < indexFound.end(); indexIterator++ ){
+				if(indexIterator != indexFound.begin()){
+					itk::LineIterator<OutputImageType> it2(outImage, *previousIndex, *indexIterator);
+					it2.GoToBegin();
+					while (!it2.IsAtEnd())
+					{
+						it2.Set(255);
+						++it2;
+					}
+					previousIndex = &(*indexIterator);
+
+					
+				}
+				for(double angle = 0;angle <= 2*vnl_math::pi; angle += vnl_math::pi/60.0 )
+						{
+							localIndex[0] = (*indexIterator)[0] + 5*std::cos(angle);
+							localIndex[1] = (*indexIterator)[1] + 5*std::sin(angle);
+							OutputImageType::RegionType outputRegion = outImage->GetLargestPossibleRegion();
+							if( outputRegion.IsInside( localIndex ) ){
+								outImage->SetPixel( localIndex, 0 );
+							}
+						}
+			}
+
+
+for ( shadowIt.GoToBegin() ; !shadowIt.IsAtEnd(); --shadowIt )
+			{
+				if(!atShadow){
+					if(shadowIt.Get()==255){
+						++counter;
+						if(counter>=10){
+							counter=0;
+							shadowy[shadowIt.GetIndex()[0]]=false;
+							shadowIt.NextLine();
+							outIndex[0]=shadowIt.GetIndex()[0];
+							outIndex[1]= boundarypositions[shadowIt.GetIndex()[0]];
+							shadowIt.SetIndex(outIndex);
+							if(shadowIt.Get()==0) atShadow= true; //if the first pixel is black we start next round as @shadow
+							else{
+								atShadow= false;
+							}
+						}
+					}
+					if(shadowIt.Get()==0){
+						if(counter<10){
+							counter=0;
+							atShadow=true;
+						}
+						else{
+							counter=0;
+							shadowy[shadowIt.GetIndex()[0]]=false;
+							shadowIt.NextLine();
+							outIndex[0]=shadowIt.GetIndex()[0];
+							outIndex[1]= boundarypositions[shadowIt.GetIndex()[0]];
+							shadowIt.SetIndex(outIndex);
+							if(shadowIt.Get()==0) atShadow= true; //if the first pixel is black we start next round as @shadow
+							else{
+								atShadow= false;
+							}
+						}
+					}
+				}
+				if(atShadow){
+					if(shadowIt.Get()==0){
+						++counter;
+						if(counter>=20){
+							counter=0;
+							shadowy[shadowIt.GetIndex()[0]]=true;
+							shadowIt.NextLine();
+							outIndex[0]=shadowIt.GetIndex()[0];
+							outIndex[1]= boundarypositions[shadowIt.GetIndex()[0]];
+							shadowIt.SetIndex(outIndex);
+							if(shadowIt.Get()==0) atShadow= true; //if the first pixel is black we start next round as @shadow
+							else{
+								atShadow= false;
+							}
+						}
+					}
+					else{
+							counter=0;
+							shadowy[shadowIt.GetIndex()[0]]=false;
+							shadowIt.NextLine();
+							outIndex[0]=shadowIt.GetIndex()[0];
+							outIndex[1]= boundarypositions[shadowIt.GetIndex()[0]];
+							shadowIt.SetIndex(outIndex);
+							if(shadowIt.Get()==0) atShadow= true; //if the first pixel is black we start next round as @shadow
+							else{
+								atShadow= false;
+							}
+					}
+
+					
+				}
+				if(shadowIt.IsAtReverseEndOfLine()){
+					counter=0;
+					shadowy[shadowIt.GetIndex()[0]]=false;
+					shadowIt.NextLine();
+					outIndex[0]=shadowIt.GetIndex()[0];
+					outIndex[1]= boundarypositions[shadowIt.GetIndex()[0]];
+					shadowIt.SetIndex(outIndex);
+					if(shadowIt.Get()==0) atShadow= true; //if the first pixel is black we start next round as @shadow
+					else{
+								atShadow= false;
+							}
+
+				}
+			}
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			for ( outIt.GoToBegin() ; !outIt.IsAtEnd(); --outIt )
+			{
+				if(!atShadow){
+					if(outIt.Get()!=0){
+						++counter;
+						if(counter==10){
+							counter=0;
+							shadowy[outIt.GetIndex()[0]]=false;
+							outIt.NextLine();
+							outIndex[0]=outIt.GetIndex()[0];
+							outIndex[1]= boundarypositions[outIt.GetIndex()[0]];
+							outIt.SetIndex(outIndex);
+							if(outIt.Get()==0) atShadow= true; //if the first pixel is black we start next round as @shadow
+							else{
+								atShadow= false;
+							}
+						}
+					}
+					if(outIt.Get()==0){
+						if(counter<10){
+							counter=0;
+							atShadow=true;
+						}
+						else{
+							counter=0;
+							shadowy[outIt.GetIndex()[0]]=false;
+							outIt.NextLine();
+							outIndex[0]=outIt.GetIndex()[0];
+							outIndex[1]= boundarypositions[outIt.GetIndex()[0]];
+							outIt.SetIndex(outIndex);
+							if(outIt.Get()==0) atShadow= true; //if the first pixel is black we start next round as @shadow
+							else{
+								atShadow= false;
+							}
+						}
+					}
+				}
+				if(atShadow){
+					if(outIt.Get()==0){
+						++counter;
+						if(counter>=20){
+							counter=0;
+							shadowy[outIt.GetIndex()[0]]=true;
+							outIt.NextLine();
+							outIndex[0]=outIt.GetIndex()[0];
+							outIndex[1]= boundarypositions[outIt.GetIndex()[0]];
+							outIt.SetIndex(outIndex);
+							if(outIt.Get()==0) atShadow= true; //if the first pixel is black we start next round as @shadow
+							else{
+								atShadow= false;
+							}
+						}
+					}
+					else{
+							counter=0;
+							shadowy[outIt.GetIndex()[0]]=false;
+							outIt.NextLine();
+							outIndex[0]=outIt.GetIndex()[0];
+							outIndex[1]= boundarypositions[outIt.GetIndex()[0]];
+							outIt.SetIndex(outIndex);
+							if(outIt.Get()==0) atShadow= true; //if the first pixel is black we start next round as @shadow
+							else{
+								atShadow= false;
+							}
+					}
+
+					
+				}
+				
+			}
+			
+			for ( outIt.GoToBegin() ; !outIt.IsAtEnd(); --outIt )
+			{
+				if(outIt.Get()!=0){
+					shadowy[outIt.GetIndex()[0]]=false;
+					outIt.NextLine();
+					outIndex[0]=outIt.GetIndex()[0];
+					outIndex[1]= boundarypositions[outIt.GetIndex()[0]];
+					outIt.SetIndex(outIndex);
+					counter=0;
+					if(outIt.Get()!=0) atShadow= false;
+						else{
+							atShadow=true;
+						}
+				}
+				else{
+					counter++;
+					if(counter==25){
+						shadowy[outIt.GetIndex()[0]]=true;
+						outIt.NextLine();
+						outIndex[0]=outIt.GetIndex()[0];
+						outIndex[1]= boundarypositions[outIt.GetIndex()[0]];
+						outIt.SetIndex(outIndex);
+						counter=0;
+						if(outIt.Get()!=0) atShadow= false;
+						else{
+							atShadow=true;
+						}
+					}
+				}
+
+			}

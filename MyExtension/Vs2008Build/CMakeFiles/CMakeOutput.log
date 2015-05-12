@@ -1,0 +1,163 @@
+The system is: Windows - 6.1 - AMD64
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: C:/Program Files (x86)/Microsoft Visual Studio 9.0/VC/bin/cl.exe 
+Build flags: ;/DWIN32;/D_WINDOWS;/W2;;;
+Id flags: 
+
+The output was:
+0
+
+Microsoft (R) Visual C++ Express Edition, versión 9.0.30729.1.
+(C) Microsoft Corp 2007. Reservados todos los derechos.
+1>------ Operaci¢n Generar iniciada: proyecto: CompilerIdC, configuraci¢n: Debug Win32 ------
+1>Compilando...
+1>CMakeCCompilerId.c
+1>Vinculando...
+1>Incrustando manifiesto...
+1>Ejecutando evento posterior a la compilaci¢n...
+1>CMAKE_C_COMPILER=C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin\cl.exe
+1>El registro de compilaci¢n se guard¢ en el "file://c:\PFC\SlicerModules\MyExtension\Vs2008Build\CMakeFiles\3.0.0\CompilerIdC\Debug\BuildLog.htm"
+1>CompilerIdC - 0 errores, 0 advertencias
+========== Generar: 1 correctos, 0 incorrectos, 0 actualizados, 0 omitidos ==========
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.exe"
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.vcproj"
+
+The C compiler identification is MSVC, found in "C:/PFC/SlicerModules/MyExtension/Vs2008Build/CMakeFiles/3.0.0/CompilerIdC/CompilerIdC.exe"
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+Compiler: C:/Program Files (x86)/Microsoft Visual Studio 9.0/VC/bin/cl.exe 
+Build flags: ;/DWIN32;/D_WINDOWS;/W2;/GR;/EHsc;;;/bigobj;
+Id flags: 
+
+The output was:
+0
+
+Microsoft (R) Visual C++ Express Edition, versión 9.0.30729.1.
+(C) Microsoft Corp 2007. Reservados todos los derechos.
+1>------ Operaci¢n Generar iniciada: proyecto: CompilerIdCXX, configuraci¢n: Debug Win32 ------
+1>Compilando...
+1>CMakeCXXCompilerId.cpp
+1>Vinculando...
+1>Incrustando manifiesto...
+1>Ejecutando evento posterior a la compilaci¢n...
+1>CMAKE_CXX_COMPILER=C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin\cl.exe
+1>El registro de compilaci¢n se guard¢ en el "file://c:\PFC\SlicerModules\MyExtension\Vs2008Build\CMakeFiles\3.0.0\CompilerIdCXX\Debug\BuildLog.htm"
+1>CompilerIdCXX - 0 errores, 0 advertencias
+========== Generar: 1 correctos, 0 incorrectos, 0 actualizados, 0 omitidos ==========
+
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.exe"
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.vcproj"
+
+The CXX compiler identification is MSVC, found in "C:/PFC/SlicerModules/MyExtension/Vs2008Build/CMakeFiles/3.0.0/CompilerIdCXX/CompilerIdCXX.exe"
+
+Determining if the C compiler works passed with the following output:
+Change Dir: C:/PFC/SlicerModules/MyExtension/Vs2008Build/CMakeFiles/CMakeTmp
+
+Run Build Command:"C:/Program Files (x86)/Microsoft Visual Studio 9.0/Common7/IDE/VCExpress.exe" "CMAKE_TRY_COMPILE.sln" "/build" "Debug" "/project" "cmTryCompileExec1853991547"
+
+Microsoft (R) Visual C++ Express Edition, versión 9.0.30729.1.
+(C) Microsoft Corp 2007. Reservados todos los derechos.
+1>------ Operaci¢n Generar iniciada: proyecto: cmTryCompileExec1853991547, configuraci¢n: Debug Win32 ------
+1>Compilando...
+1>Compilador de optimizaci¢n de C/C++ de 32 bits de Microsoft (R) versi¢n 15.00.30729.01 para 80x86
+1>Copyright (C) Microsoft Corporation.  All rights reserved.
+1>cl /Od /D "WIN32" /D "_WINDOWS" /D "_DEBUG" /D "CMAKE_INTDIR=\"Debug\"" /D "_MBCS" /FD /RTC1 /MDd /Fo"cmTryCompileExec1853991547.dir\Debug\\" /Fd"cmTryCompileExec1853991547.dir\Debug\vc90.pdb" /W2 /c /Zi /TC .\testCCompiler.c
+1>testCCompiler.c
+1>Compilando manifiesto en los recursos...
+1>Microsoft (R) Windows (R) Resource Compiler Version 6.1.6723.1
+1>Copyright (C) Microsoft Corporation.  All rights reserved.
+1>Vinculando...
+1>Incrustando manifiesto...
+1>Microsoft (R) Windows (R) Resource Compiler Version 6.1.6723.1
+1>Copyright (C) Microsoft Corporation.  All rights reserved.
+1>El registro de compilaci¢n se guard¢ en el "file://c:\PFC\SlicerModules\MyExtension\Vs2008Build\CMakeFiles\CMakeTmp\cmTryCompileExec1853991547.dir\Debug\BuildLog.htm"
+1>cmTryCompileExec1853991547 - 0 errores, 0 advertencias
+========== Generar: 1 correctos, 0 incorrectos, 0 actualizados, 0 omitidos ==========
+
+
+Detecting C compiler ABI info compiled with the following output:
+Change Dir: C:/PFC/SlicerModules/MyExtension/Vs2008Build/CMakeFiles/CMakeTmp
+
+Run Build Command:"C:/Program Files (x86)/Microsoft Visual Studio 9.0/Common7/IDE/VCExpress.exe" "CMAKE_TRY_COMPILE.sln" "/build" "Debug" "/project" "cmTryCompileExec12027836"
+
+Microsoft (R) Visual C++ Express Edition, versión 9.0.30729.1.
+(C) Microsoft Corp 2007. Reservados todos los derechos.
+1>------ Operaci¢n Generar iniciada: proyecto: cmTryCompileExec12027836, configuraci¢n: Debug Win32 ------
+1>Compilando...
+1>Compilador de optimizaci¢n de C/C++ de 32 bits de Microsoft (R) versi¢n 15.00.30729.01 para 80x86
+1>Copyright (C) Microsoft Corporation.  All rights reserved.
+1>cl /Od /D "WIN32" /D "_WINDOWS" /D "_DEBUG" /D "CMAKE_INTDIR=\"Debug\"" /D "_MBCS" /FD /RTC1 /MDd /Fo"cmTryCompileExec12027836.dir\Debug\\" /Fd"cmTryCompileExec12027836.dir\Debug\vc90.pdb" /W2 /c /Zi /TC "..\..\..\..\..\..\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCCompilerABI.c"
+1>CMakeCCompilerABI.c
+1>Compilando manifiesto en los recursos...
+1>Microsoft (R) Windows (R) Resource Compiler Version 6.1.6723.1
+1>Copyright (C) Microsoft Corporation.  All rights reserved.
+1>Vinculando...
+1>Incrustando manifiesto...
+1>Microsoft (R) Windows (R) Resource Compiler Version 6.1.6723.1
+1>Copyright (C) Microsoft Corporation.  All rights reserved.
+1>El registro de compilaci¢n se guard¢ en el "file://c:\PFC\SlicerModules\MyExtension\Vs2008Build\CMakeFiles\CMakeTmp\cmTryCompileExec12027836.dir\Debug\BuildLog.htm"
+1>cmTryCompileExec12027836 - 0 errores, 0 advertencias
+========== Generar: 1 correctos, 0 incorrectos, 0 actualizados, 0 omitidos ==========
+
+
+Determining if the CXX compiler works passed with the following output:
+Change Dir: C:/PFC/SlicerModules/MyExtension/Vs2008Build/CMakeFiles/CMakeTmp
+
+Run Build Command:"C:/Program Files (x86)/Microsoft Visual Studio 9.0/Common7/IDE/VCExpress.exe" "CMAKE_TRY_COMPILE.sln" "/build" "Debug" "/project" "cmTryCompileExec3564046321"
+
+Microsoft (R) Visual C++ Express Edition, versión 9.0.30729.1.
+(C) Microsoft Corp 2007. Reservados todos los derechos.
+1>------ Operaci¢n Generar iniciada: proyecto: cmTryCompileExec3564046321, configuraci¢n: Debug Win32 ------
+1>Compilando...
+1>Compilador de optimizaci¢n de C/C++ de 32 bits de Microsoft (R) versi¢n 15.00.30729.01 para 80x86
+1>Copyright (C) Microsoft Corporation.  All rights reserved.
+1>cl /Od /D "WIN32" /D "_WINDOWS" /D "_DEBUG" /D "CMAKE_INTDIR=\"Debug\"" /D "_MBCS" /FD /EHsc /RTC1 /MDd /Fo"cmTryCompileExec3564046321.dir\Debug\\" /Fd"cmTryCompileExec3564046321.dir\Debug\vc90.pdb" /W2 /c /Zi /TP   /bigobj
+1>   .\testCXXCompiler.cxx
+1>testCXXCompiler.cxx
+1>Compilando manifiesto en los recursos...
+1>Microsoft (R) Windows (R) Resource Compiler Version 6.1.6723.1
+1>Copyright (C) Microsoft Corporation.  All rights reserved.
+1>Vinculando...
+1>Incrustando manifiesto...
+1>Microsoft (R) Windows (R) Resource Compiler Version 6.1.6723.1
+1>Copyright (C) Microsoft Corporation.  All rights reserved.
+1>No se puede eliminar el archivo temporal. Compruebe que no est  abierto y protegido.
+1>
+1>El registro de compilaci¢n se guard¢ en el "file://c:\PFC\SlicerModules\MyExtension\Vs2008Build\CMakeFiles\CMakeTmp\cmTryCompileExec3564046321.dir\Debug\BuildLog.htm"
+1>cmTryCompileExec3564046321 - 0 errores, 0 advertencias
+========== Generar: 1 correctos, 0 incorrectos, 0 actualizados, 0 omitidos ==========
+
+
+Detecting CXX compiler ABI info compiled with the following output:
+Change Dir: C:/PFC/SlicerModules/MyExtension/Vs2008Build/CMakeFiles/CMakeTmp
+
+Run Build Command:"C:/Program Files (x86)/Microsoft Visual Studio 9.0/Common7/IDE/VCExpress.exe" "CMAKE_TRY_COMPILE.sln" "/build" "Debug" "/project" "cmTryCompileExec1558466378"
+
+Microsoft (R) Visual C++ Express Edition, versión 9.0.30729.1.
+(C) Microsoft Corp 2007. Reservados todos los derechos.
+1>------ Operaci¢n Generar iniciada: proyecto: cmTryCompileExec1558466378, configuraci¢n: Debug Win32 ------
+1>Compilando...
+1>Compilador de optimizaci¢n de C/C++ de 32 bits de Microsoft (R) versi¢n 15.00.30729.01 para 80x86
+1>Copyright (C) Microsoft Corporation.  All rights reserved.
+1>cl /Od /D "WIN32" /D "_WINDOWS" /D "_DEBUG" /D "CMAKE_INTDIR=\"Debug\"" /D "_MBCS" /FD /EHsc /RTC1 /MDd /Fo"cmTryCompileExec1558466378.dir\Debug\\" /Fd"cmTryCompileExec1558466378.dir\Debug\vc90.pdb" /W2 /c /Zi /TP   /bigobj
+1>   "..\..\..\..\..\..\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCXXCompilerABI.cpp"
+1>CMakeCXXCompilerABI.cpp
+1>Compilando manifiesto en los recursos...
+1>Microsoft (R) Windows (R) Resource Compiler Version 6.1.6723.1
+1>Copyright (C) Microsoft Corporation.  All rights reserved.
+1>Vinculando...
+1>Incrustando manifiesto...
+1>Microsoft (R) Windows (R) Resource Compiler Version 6.1.6723.1
+1>Copyright (C) Microsoft Corporation.  All rights reserved.
+1>No se puede eliminar el archivo temporal. Compruebe que no est  abierto y protegido.
+1>
+1>El registro de compilaci¢n se guard¢ en el "file://c:\PFC\SlicerModules\MyExtension\Vs2008Build\CMakeFiles\CMakeTmp\cmTryCompileExec1558466378.dir\Debug\BuildLog.htm"
+1>cmTryCompileExec1558466378 - 0 errores, 0 advertencias
+========== Generar: 1 correctos, 0 incorrectos, 0 actualizados, 0 omitidos ==========
+
+

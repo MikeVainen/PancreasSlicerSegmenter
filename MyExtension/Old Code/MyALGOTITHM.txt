@@ -1,0 +1,401 @@
+#include "itkImageFileWriter.h"
+
+#include "itkSmoothingRecursiveGaussianImageFilter.h"
+
+#include "itkPluginUtilities.h"
+
+#include "MyAlgorithmCLP.h"
+#include "itkExtractImageFilter.h"
+
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <string>
+#include <iostream>
+#include <Windows.h>
+
+#include "itkImageFileReader.h"
+#include "itkImageFileWriter.h"
+#include "itkImageRegionIterator.h"
+#include "itkImageLinearIteratorWithIndex.h"
+
+#include "itkGradientAnisotropicDiffusionImageFilter.h"
+#include <itkCurvatureAnisotropicDiffusionImageFilter.h>
+
+#include "itkRescaleIntensityImageFilter.h"
+#include <itkGradientMagnitudeImageFilter.h>
+#include "itkGradientMagnitudeRecursiveGaussianImageFilter.h"
+
+#include <itkGrayscaleErodeImageFilter.h>
+#include <itkGrayscaleDilateImageFilter.h>
+#include <itkBinaryBallStructuringElement.h>
+
+#include <itkVotingBinaryHoleFillingImageFilter.h>
+#include <itkCastImageFilter.h>
+#include <itkBinaryCrossStructuringElement.h>
+#include "itkFlatStructuringElement.h"
+
+// Use an anonymous namespace to keep class types and function names
+// from colliding when module is used as shared object module.  Every
+// thing should be in an anonymous namespace except for the module
+// entry point, e.g. main()
+//
+namespace
+{
+
+template <class T>
+
+
+
+
+int DoIt( int argc, char * argv[], T )
+{
+  PARSE_ARGS;
+
+  typedef          T           InputPixelType;
+  typedef          T           OutputPixelType;
+  const   unsigned int         Dimension = 2;
+
+  //Image types: Input and Output. Also the other ones are used for processing or pixels operations
+  typedef itk::Image<InputPixelType, Dimension> InputImageType;
+  typedef itk::Image<OutputPixelType, Dimension> OutputImageType;
+  typedef itk::Image<float,Dimension> GradientImageType;
+  //I/O
+  typedef itk::ImageFileReader<InputImageType>  ReaderType;
+  typedef itk::ImageFileWriter<OutputImageType> WriterType;
+
+  //Iterators 
+  typedef itk::ImageLinearIteratorWithIndex<InputImageType> IteratorType;
+  typedef itk::ImageLinearIteratorWithIndex<InputImageType> MaskIteratorType;
+  typedef itk::CurvatureAnisotropicDiffusionImageFilter<OutputImageType, GradientImageType> AnisoCurvatureType;
+
+  //Filling and smoothing contours for the mask image
+  typedef itk::VotingBinaryHoleFillingImageFilter<InputImageType,InputImageType >  FillingFilterType;
+  typedef itk::FlatStructuringElement<Dimension> FlatStructuringElementType;
+  typedef itk::GrayscaleErodeImageFilter<InputImageType,OutputImageType, FlatStructuringElementType> ErodeFilterType;
+  typedef itk::GrayscaleDilateImageFilter<InputImageType,OutputImageType, FlatStructuringElementType> DilateFilterType;
+
+  //Casting needed for the image processing
+  typedef itk::CastImageFilter<GradientImageType,OutputImageType> CasterType;
+  typedef itk::GradientMagnitudeImageFilter<GradientImageType,GradientImageType> GradMagType;
+  typedef itk::GradientMagnitudeRecursiveGaussianImageFilter<GradientImageType,GradientImageType> RecursiveGradMadType;
+
+   ReaderType::Pointer reader = ReaderType::New();
+   WriterType::Pointer writer = WriterType::New();
+
+   FillingFilterType::Pointer filler = FillingFilterType::New();
+   ErodeFilterType::Pointer eroder = ErodeFilterType::New();
+   DilateFilterType::Pointer dilater = DilateFilterType::New();
+
+   AnisoCurvatureType::Pointer aniCur = AnisoCurvatureType::New(); //Anisotropic curvature smoothing filter for denoising
+   CasterType::Pointer caster = CasterType::New();                 // Caster for the gradient measures
+   GradMagType::Pointer gradMagnitude = GradMagType::New();
+   RecursiveGradMadType::Pointer recursiveGradMagnitude = RecursiveGradMadType::New();
+
+
+   InputImageType::Pointer image;
+   InputImageType::Pointer maskImage = InputImageType::New();
+   InputImageType::Pointer finalMaskImage = InputImageType::New();
+   OutputImageType::Pointer outputImage = OutputImageType::New();
+
+   reader->SetFileName( inputVolume.c_str() );
+
+  try
+    {
+    reader->Update();
+    image = reader->GetOutput();
+    }
+  catch ( itk::ExceptionObject &err)
+    {
+    std::cout << "ExceptionObject caught a !" << std::endl;
+    std::cout << err << std::endl;
+    return -1;
+    }
+
+ //We create a mask and output image of the same size as the one we're setting in
+
+  InputImageType::RegionType region = image->GetLargestPossibleRegion();
+
+  // Pixel data is allocated
+  maskImage->SetRegions( region );
+  maskImage->Allocate();
+  finalMaskImage->SetRegions( region );
+  finalMaskImage->Allocate();
+
+
+  itk::ImageRegionIterator<InputImageType> imageIterator(maskImage,maskImage->GetLargestPossibleRegion());
+ 
+  // Make the black base for the mask image
+  while(!imageIterator.IsAtEnd())
+    {
+     imageIterator.Set(0);
+	 finalMaskImage->SetPixel(imageIterator.GetIndex(),0);
+     ++imageIterator;
+    }
+
+  // Defining the region to work with. Typical starts are set to 15 and 18 in the horizontal and vertical axis respectivily
+  OutputImageType::IndexType start;
+  start[0] = bX;
+  start[1] = bY;
+  // Software Guide : EndCodeSnippet
+
+  // Software Guide : BeginCodeSnippet
+  OutputImageType::SizeType size;
+  size[0] = eX-bX;
+  size[1] = eY-bY;
+  // Software Guide : EndCodeSnippet
+
+  // Software Guide : BeginCodeSnippet
+  InputImageType::RegionType desiredInputRegion;
+  desiredInputRegion.SetSize(  size  );
+  desiredInputRegion.SetIndex( start );
+
+  InputImageType::RegionType desiredMaskRegion;
+  desiredMaskRegion.SetSize(  size  );
+  desiredMaskRegion.SetIndex( start );
+
+  IteratorType inputIt( image, desiredInputRegion );
+  MaskIteratorType maskIt( maskImage, desiredMaskRegion);
+  MaskIteratorType mIt( maskImage, desiredMaskRegion);
+
+  const unsigned int radiusX = radius;
+  const unsigned int radiusY = radius;
+
+  // Software Guide : BeginCodeSnippet
+  InputImageType::SizeType indexRadius;
+
+  indexRadius[0] = radiusX; // radius along x
+  indexRadius[1] = radiusY; // radius along y
+
+  filler->SetRadius( indexRadius );
+  // Software Guide : EndCodeSnippet
+
+
+  // Software Guide : BeginCodeSnippet
+  filler->SetBackgroundValue(   0 );
+  filler->SetForegroundValue( 255 );
+  // Software Guide : EndCodeSnippet
+
+  // Software Guide : BeginCodeSnippet
+  filler->SetMajorityThreshold( 2 );
+  // Software Guide : EndCodeSnippet
+  
+  int NUM= radius-4; 
+  std::vector<std::vector<int>> diamond = createDiamond (NUM);
+  FlatStructuringElementType::RadiusType rad; 
+  rad.Fill(NUM);
+  FlatStructuringElementType elementoEstructurante = FlatStructuringElementType::Box(rad);  
+
+  int i=0;
+  int j=0;
+
+  //Now we introduce the elements into the element with that exact diamond structure
+  for(FlatStructuringElementType::Iterator iter = 
+elementoEstructurante.Begin(); iter != elementoEstructurante.End(); ++iter, j++) 
+  { 
+		if(j==(2*NUM+1)){
+			j=0;
+			++i;
+			std::cout << std::endl ;
+		}
+		*iter = diamond[i][j];
+		//we print the look of the structuring element
+		std::cout << *iter;
+  } 
+
+   eroder->SetKernel(elementoEstructurante);
+  dilater->SetKernel(elementoEstructurante);
+
+  //we need to explore the region verticaly searching for the contour of the texture with the aid of three different iterators. 
+ // One iterator reads the original input image values looking for pixel values greater than the threshold we stablish for detecting the contour and getting rid of the echoes.
+//The other two will be applied to the new mask image we're creating
+
+  inputIt.SetDirection(1);
+  maskIt.SetDirection(1);
+  mIt.SetDirection(1);
+  
+
+  //Indicates the last vertical position of the pixel which matches the threshold value. The position is re-initialized after each complete line iteration
+  InputImageType::IndexType actual;
+  for ( inputIt.GoToBegin(),  maskIt.GoToBegin(), mIt.GoToBegin(); ! inputIt.IsAtEnd(); ++inputIt, ++maskIt, ++mIt )
+    {
+
+		if (inputIt.Get()>= threshold){
+			actual=maskIt.GetIndex();
+		}
+		if(maskIt.IsAtEndOfLine()){
+			//whenever the limit is detected we still give some space to ensure keeping the complete contour
+			actual[1]= actual[1]+3;
+			for(mIt.GoToBeginOfLine(); ! mIt.IsAtEndOfLine() ;++mIt){
+				mIt.Set(255);
+				if( mIt.GetIndex()==actual){
+					mIt.GoToEndOfLine();
+				}
+			}
+			maskIt.NextLine();
+			inputIt.NextLine();
+			mIt.NextLine();
+			actual=mIt.GetIndex();
+		}				
+    }
+
+  filler->SetInput(maskImage);
+  eroder->SetInput(filler->GetOutput());
+  dilater->SetInput(eroder->GetOutput());
+  maskImage =  dilater->GetOutput() ;
+  maskImage->Update();
+
+  IteratorType rIt( maskImage, desiredMaskRegion);
+  rIt.SetDirection(1);
+  IteratorType resultIt( finalMaskImage, desiredMaskRegion);
+  resultIt.SetDirection(1);
+
+  for ( rIt.GoToBegin(),  resultIt.GoToBegin(), inputIt.GoToBegin() ; ! rIt.IsAtEnd(); ++rIt, ++resultIt, ++inputIt)
+    {
+		resultIt.Set(rIt.Get()*inputIt.Get()/255); 
+		if(rIt.IsAtEndOfLine()){
+			resultIt.NextLine();
+			rIt.NextLine();
+			inputIt.NextLine();
+		}
+   }
+
+  aniCur->SetInput(finalMaskImage);
+  aniCur->SetNumberOfIterations(6);
+  aniCur->SetTimeStep(0.125);
+  aniCur->SetConductanceParameter(9);
+
+  switch(phase){
+
+	case 1:
+		  if (sigma!=1.0){
+			 recursiveGradMagnitude->SetSigma(sigma);
+		   	 recursiveGradMagnitude->SetInput(aniCur->GetOutput());
+		     caster->SetInput(recursiveGradMagnitude->GetOutput());
+		  }
+	      else{
+		     gradMagnitude->SetInput(aniCur->GetOutput());
+	         caster->SetInput(gradMagnitude->GetOutput());
+			 //caster->SetInput(gradientMagnitudeImage(aniCur->GetOutput(),1,sigma));
+          }
+          break;
+    default:
+		  caster->SetInput(aniCur->GetOutput());
+	      break;
+  }
+
+  writer->SetInput( caster->GetOutput() );
+  writer->SetFileName( outputVolume.c_str() );
+  writer->Update();
+
+  return EXIT_SUCCESS;
+}
+
+} // end of anonymous namespace
+
+
+std::vector<std::vector<int>> createDiamond (int size){
+	int i=0, j=0; 
+  // Creates the 2D diamond-shaped structure that will be used for eroding which is the most recommended for this sort of images
+	std::vector<std::vector<int>> diamondStructure(size+size+1, std::vector<int>(size+size+1)); 
+	for(i=-size; i<=size; i++){
+		  for(j=-size; j<=size; j++){
+			  if( abs(i)+abs(j)<=size){
+				 diamondStructure[size+i][size+j] = 1;
+				}
+			  else { 
+				 diamondStructure[size+i][size+j] = 0;
+				}
+			}
+		}
+	return diamondStructure;
+}
+
+itk::Image<float,2>::Pointer gradientMagnitudeImage(itk::Image<float,2>::Pointer pointer, int option, double sigma){
+
+	switch(option){
+
+	case 1:
+		  if (sigma!=1.0){
+			  typedef itk::GradientMagnitudeRecursiveGaussianImageFilter<itk::Image<float,2>,itk::Image<float,2>> RecursiveGMType;
+              RecursiveGMType::Pointer rgmfilter = RecursiveGMType::New();
+			  rgmfilter->SetSigma(sigma);
+		   	  rgmfilter->SetInput(pointer);
+			  pointer = rgmfilter->GetOutput();
+		  }
+	      else{
+			  typedef itk::GradientMagnitudeImageFilter<itk::Image<float,2>,itk::Image<float,2>> GMType;
+			  GMType::Pointer gmfilter = GMType::New();
+		      gmfilter->SetInput(pointer);
+			  pointer = gmfilter->GetOutput();
+          }
+          break;
+    default:
+		  break;
+  }
+	return pointer;
+
+
+	
+}
+
+int main( int argc, char * argv[] )
+{
+  PARSE_ARGS;
+
+  itk::ImageIOBase::IOPixelType     pixelType;
+  itk::ImageIOBase::IOComponentType componentType;
+
+  try
+    {
+    itk::GetImageType(inputVolume, pixelType, componentType);
+
+    // This filter handles all types on input, but only produces
+    // signed types
+    switch( componentType )
+      {
+      case itk::ImageIOBase::UCHAR:
+        return DoIt( argc, argv, static_cast<unsigned char>(0) );
+        break;
+      case itk::ImageIOBase::CHAR:
+        return DoIt( argc, argv, static_cast<char>(0) );
+        break;
+      case itk::ImageIOBase::USHORT:
+        return DoIt( argc, argv, static_cast<unsigned short>(0) );
+        break;
+      case itk::ImageIOBase::SHORT:
+        return DoIt( argc, argv, static_cast<short>(0) );
+        break;
+      case itk::ImageIOBase::UINT:
+        return DoIt( argc, argv, static_cast<unsigned int>(0) );
+        break;
+      case itk::ImageIOBase::INT:
+        return DoIt( argc, argv, static_cast<int>(0) );
+        break;
+      case itk::ImageIOBase::ULONG:
+        return DoIt( argc, argv, static_cast<unsigned long>(0) );
+        break;
+      case itk::ImageIOBase::LONG:
+        return DoIt( argc, argv, static_cast<long>(0) );
+        break;
+      case itk::ImageIOBase::FLOAT:
+        return DoIt( argc, argv, static_cast<float>(0) );
+        break;
+      case itk::ImageIOBase::DOUBLE:
+        return DoIt( argc, argv, static_cast<double>(0) );
+        break;
+      case itk::ImageIOBase::UNKNOWNCOMPONENTTYPE:
+      default:
+        std::cout << "unknown component type" << std::endl;
+        break;
+      }
+    }
+
+  catch( itk::ExceptionObject & excep )
+    {
+    std::cerr << argv[0] << ": exception caught !" << std::endl;
+    std::cerr << excep << std::endl;
+    return EXIT_FAILURE;
+    }
+  return EXIT_SUCCESS;
+}

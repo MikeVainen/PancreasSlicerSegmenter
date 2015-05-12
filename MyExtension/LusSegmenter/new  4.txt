@@ -1,0 +1,49 @@
+switch( cType )
+		{
+			case itk::ImageIOBase::UCHAR:
+				lus::getImagesRegionOfInterest(argc,argv,finalMaskImage,contourRegion,120,static_cast<unsigned char>(0));
+				
+				break;
+			case itk::ImageIOBase::CHAR:
+				lus::getImagesRegionOfInterest(argc,argv,finalMaskImage,contourRegion,120,static_cast<char>(0) );
+				
+				break;
+			case itk::ImageIOBase::USHORT:
+				lus::getImagesRegionOfInterest(argc,argv,finalMaskImage,contourRegion,120,static_cast<unsigned short>(0) );
+				
+				break;
+			case itk::ImageIOBase::SHORT:
+				 lus::getImagesRegionOfInterest(argc,argv,finalMaskImage,contourRegion,120,static_cast<short>(0) );
+				 
+				 break;
+			case itk::ImageIOBase::UINT:
+				lus::getImagesRegionOfInterest(argc,argv,finalMaskImage,contourRegion,120,static_cast<unsigned int>(0) );
+				
+				break;
+			case itk::ImageIOBase::INT:
+				lus::getImagesRegionOfInterest(argc,argv,finalMaskImage,contourRegion,120,static_cast<int>(0) );
+				
+				break;
+			case itk::ImageIOBase::ULONG:
+				lus::getImagesRegionOfInterest(argc,argv,finalMaskImage,contourRegion,120,static_cast<unsigned long>(0) );
+				
+				break;
+			case itk::ImageIOBase::LONG:
+				lus::getImagesRegionOfInterest(argc,argv,finalMaskImage,contourRegion,120,static_cast<long>(0) );
+				
+				break;
+			case itk::ImageIOBase::FLOAT:
+				lus::getImagesRegionOfInterest(argc,argv,finalMaskImage,contourRegion,120,static_cast<float>(0) );
+				
+				 break;
+			case itk::ImageIOBase::DOUBLE:
+				lus::getImagesRegionOfInterest(argc,argv,finalMaskImage,contourRegion,120,static_cast<double>(0) );
+			
+				break;
+			case itk::ImageIOBase::UNKNOWNCOMPONENTTYPE:
+			default:
+				std::cout << "unknown component type" << std::endl;
+				break;
+		}
+
+		//lus::getImagesRegionOfInterest(argc,argv,finalMaskImage,contourRegion,120,static_cast<unsigned char>(0));
